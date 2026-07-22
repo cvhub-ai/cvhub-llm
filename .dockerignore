@@ -1,0 +1,17 @@
+.env
+.env.*
+!.env.example
+
+.venv/
+__pycache__/
+.pytest_cache/
+*.pyc
+*.pyo
+
+.git/
+.gitignore
+
+tests/
+models/
+
+README.md
