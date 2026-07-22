@@ -76,6 +76,8 @@ echo "Listen address: ${LLM_HOST}:${LLM_PORT}"
 echo "Tensor parallel size: ${TENSOR_PARALLEL_SIZE}"
 
 # export VLLM_USE_V2_MODEL_RUNNER=0
+
+# Docker official image or a standard vLLM environment
 if command -v vllm >/dev/null 2>&1; then
     exec vllm "${VLLM_ARGS[@]}"
 fi
