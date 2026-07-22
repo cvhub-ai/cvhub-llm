@@ -21,8 +21,6 @@ LLM_PORT="${LLM_PORT:-8000}"
 MAX_MODEL_LEN="${MAX_MODEL_LEN:-8192}"
 GPU_MEMORY_UTILIZATION="${GPU_MEMORY_UTILIZATION:-0.85}"
 TENSOR_PARALLEL_SIZE="${TENSOR_PARALLEL_SIZE:-1}"
-QUANTIZATION="${QUANTIZATION:-awq}"
-DTYPE="${DTYPE:-auto}"
 
 if [[ ! -d "${MODEL_DIR}" ]]; then
     echo "Error: model directory does not exist: ${MODEL_DIR}" >&2
@@ -54,10 +52,6 @@ VLLM_ARGS=(
     "${GPU_MEMORY_UTILIZATION}"
     "--tensor-parallel-size"
     "${TENSOR_PARALLEL_SIZE}"
-    "--quantization"
-    "${QUANTIZATION}"
-    "--dtype"
-    "${DTYPE}"
 )
 
 if [[ -n "${LLM_API_KEY:-}" ]]; then
@@ -75,7 +69,6 @@ echo "Served model name: ${MODEL_NAME}"
 echo "Listen address: ${LLM_HOST}:${LLM_PORT}"
 echo "Tensor parallel size: ${TENSOR_PARALLEL_SIZE}"
 
-# export VLLM_USE_V2_MODEL_RUNNER=0
 
 # Docker official image or a standard vLLM environment
 if command -v vllm >/dev/null 2>&1; then
@@ -83,6 +76,7 @@ if command -v vllm >/dev/null 2>&1; then
 fi
 
 if command -v uv >/dev/null 2>&1; then
+    export VLLM_USE_V2_MODEL_RUNNER=0   
     exec uv run vllm "${VLLM_ARGS[@]}"
 fi
 
